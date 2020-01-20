@@ -1,0 +1,56 @@
+cmake_minimum_required(VERSION 3.4.1)
+
+# convert SDK path to forward slashes on Windows
+file(TO_CMAKE_PATH ${PATH_TO_SUPERPOWERED} PATH_TO_SUPERPOWERED)
+
+include_directories(src/main/cpp)
+include_directories(${PATH_TO_SUPERPOWERED})
+
+# compile crossfader example to a native library
+add_library(
+	CrossExample
+	SHARED
+   	src/main/cpp/CrossExample.cpp
+	${PATH_TO_SUPERPOWERED}/OpenSource/SuperpoweredAndroidAudioIO.cpp
+)
+
+# compile frequency domain to a native library
+add_library(
+	FrequencyDomainExample
+	SHARED
+	src/main/cpp/FrequencyDomain.cpp
+	${PATH_TO_SUPERPOWERED}/OpenSource/SuperpoweredAndroidAudioIO.cpp
+)
+
+# compile recorder to a native library
+add_library (
+		RecorderExample
+		SHARED
+		src/main/cpp/RecorderExample.cpp
+		${PATH_TO_SUPERPOWERED}/OpenSource/SuperpoweredAndroidAudioIO.cpp
+)
+
+# link the native library against the following libraries
+target_link_libraries(
+    CrossExample
+    log
+    android
+    OpenSLES
+    ${PATH_TO_SUPERPOWERED}/libSuperpoweredAndroid${ANDROID_ABI}.a
+)
+
+target_link_libraries(
+    FrequencyDomainExample
+    log
+    android
+    OpenSLES
+    ${PATH_TO_SUPERPOWERED}/libSuperpoweredAndroid${ANDROID_ABI}.a
+)
+
+target_link_libraries (
+		RecorderExample
+		log
+		android
+		OpenSLES
+		${PATH_TO_SUPERPOWERED}/libSuperpoweredAndroid${ANDROID_ABI}.a
+)
